@@ -227,6 +227,10 @@ type detailer interface {
 	Details() map[string]interface{}
 }
 
+type framer interface {
+	Frame() uintptr
+}
+
 func getExistingStackTrace(err error) []uintptr {
 	for err != nil {
 		switch e := err.(type) { //nolint:errorlint
@@ -302,6 +306,7 @@ type E interface {
 	error
 	stackTracer
 	detailer
+	framer
 }
 
 // New returns an error with the supplied message.
@@ -312,6 +317,7 @@ func New(message string) E {
 		stack:     callers(0),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -339,6 +345,7 @@ func Errorf(format string, args ...interface{}) E {
 			stack:     callers(0),
 			details:   nil,
 			detailsMu: new(sync.Mutex),
+			frame:     frames(0),
 		}
 	} else if len(errs) == 1 {
 		unwrap := errs[0]
@@ -353,6 +360,7 @@ func Errorf(format string, args ...interface{}) E {
 			stack:     st,
 			details:   nil,
 			detailsMu: new(sync.Mutex),
+			frame:     frames(0),
 		}
 	}
 
@@ -361,6 +369,7 @@ func Errorf(format string, args ...interface{}) E {
 		stack:     callers(0),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -371,6 +380,7 @@ type fundamentalError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *fundamentalError) Error() string {
@@ -409,6 +419,7 @@ type msgError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *msgError) Error() string {
@@ -452,6 +463,7 @@ type msgJoinedError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *msgJoinedError) Error() string {
@@ -496,6 +508,7 @@ func withStack(err error) E {
 				stack:     callers(1),
 				details:   nil,
 				detailsMu: new(sync.Mutex),
+				frame:     frames(1),
 			}
 		}
 		return e
@@ -511,6 +524,7 @@ func withStack(err error) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(1),
 	}
 }
 
@@ -544,6 +558,7 @@ type noMsgError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *noMsgError) Error() string {
@@ -600,6 +615,7 @@ func Wrap(err error, message string) E {
 		stack:     callers(0),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -627,6 +643,7 @@ func Wrapf(err error, format string, args ...interface{}) E {
 		stack:     callers(0),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -638,6 +655,7 @@ type causeError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *causeError) Error() string {
@@ -689,6 +707,7 @@ func withMessage(err error, prefix ...string) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(1),
 	}
 }
 
@@ -954,6 +973,7 @@ func WithDetails(err error, kv ...interface{}) E {
 		stack:     st,
 		details:   initMap,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -991,6 +1011,7 @@ func Join(errs ...error) E {
 		stack:     callers(0),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -1001,6 +1022,7 @@ type wrapError struct {
 	stack     []uintptr
 	details   map[string]interface{}
 	detailsMu *sync.Mutex
+	frame     uintptr
 }
 
 func (e *wrapError) Error() string {
@@ -1081,6 +1103,7 @@ func WrapWith(err, with error) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
 
@@ -1134,5 +1157,6 @@ func Prefix(err error, prefix ...error) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
 	}
 }
