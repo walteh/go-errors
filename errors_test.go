@@ -138,7 +138,7 @@ func init() {
 	// We make errors inside a function so that the stack trace is
 	// different from errors made through errors.* call.
 	parentErr, noMsgErr := func() (errors.E, errors.E) {
-		return errors.New("parent"), errors.New("")
+		return errors.NewE("parent"), errors.NewE("")
 	}()
 	parentWithFormat1Err, parentWithFormat2Err := func() (errors.E, errors.E) {
 		return errors.WithStack(&errorWithFormat{"foobar\nmore data"}), errors.WithStack(&errorWithFormat{"foobar\nmore data\n"})
@@ -704,7 +704,7 @@ func TestMarshalerError(t *testing.T) {
 }
 
 func getTestNewError() errors.E {
-	err := errors.New("error")
+	err := errors.NewE("error")
 	errors.Details(err)["foo"] = "bar"
 	return err
 }

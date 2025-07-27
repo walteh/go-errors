@@ -82,6 +82,32 @@ func (f frame) MarshalJSON() ([]byte, error) {
 	})
 }
 
+func UintptrToFrame(f uintptr) (frame, error) {
+	frm, ok := runtime.CallersFrames([]uintptr{f}).Next()
+	if !ok {
+		return frame{}, fmt.Errorf("failed to get frame for %v", f)
+	}
+	return frame(frm), nil
+}
+
+func MarshalTextOfUintptrFrame(f uintptr) ([]byte, error) {
+	frm, err := UintptrToFrame(f)
+	if err != nil {
+		return nil, err
+	}
+	return frm.MarshalText()
+}
+
+// MarshalText formats a stacktrace Frame as a text string. The output is the
+// same as that of fmt.Sprintf("%+v", f), but without newlines or tabs.
+func (f frame) MarshalText() ([]byte, error) {
+	name := f.name()
+	if name == "unknown" {
+		return []byte(name), nil
+	}
+	return []byte(fmt.Sprintf("%s %s:%d", name, f.file(), f.line())), nil
+}
+
 // StackFormatter formats a stack trace as text
 // and marshals the stack trace as JSON.
 type StackFormatter struct {

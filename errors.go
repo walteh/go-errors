@@ -175,7 +175,7 @@
 //
 //	errors.AllDetails(err)["username"]
 //
-// You can join multiple errors into one error by calling errors.Join.
+// You can join multiple errors into one error by calling errors.Join.ww
 // Join also records the stack trace at the point it was called.
 //
 // # Formatting and JSON marshaling errors
@@ -188,19 +188,13 @@ package errors
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"sync"
-	"unsafe"
-
-	pkgerrors "github.com/pkg/errors"
 )
 
 type stackTracer interface {
 	StackTrace() []uintptr
-}
-
-type pkgStackTracer interface {
-	StackTrace() pkgerrors.StackTrace
 }
 
 type goErrorsStackTracer interface {
@@ -231,18 +225,48 @@ type framer interface {
 	Frame() uintptr
 }
 
+func isPkgStackTracer(err error) ([]uintptr, bool) {
+	// use reflect to see if it has a StackTrace method,
+	// if it does, check and see if the return value is an array
+	// if it is, check to see if the resolved type of that array is uintptr
+	// if it is, return true
+	// otherwise return false
+
+	funct := reflect.ValueOf(err).MethodByName("StackTrace")
+	if !funct.IsValid() || funct.IsZero() {
+		return nil, false
+	}
+
+	result := funct.Call(nil)
+	if len(result) == 0 {
+		return nil, false
+	}
+	if result[0].Kind() != reflect.Array {
+		return nil, false
+	}
+	if result[0].Type().Elem() != reflect.TypeOf(uintptr(0)) {
+		return nil, false
+	}
+	return result[0].Interface().([]uintptr), true
+}
+
 func getExistingStackTrace(err error) []uintptr {
 	for err != nil {
 		switch e := err.(type) { //nolint:errorlint
 		case stackTracer:
 			return e.StackTrace()
-		case pkgStackTracer:
-			st := e.StackTrace()
-			return *(*[]uintptr)(unsafe.Pointer(&st))
+		// case pkgStackTracer:
+		// 	st := e.StackTrace()
+		// 	return *(*[]uintptr)(unsafe.Pointer(&st))
 		case goErrorsStackTracer:
 			return e.Callers()
 		case erisStackTracer:
 			return e.StackFrames()
+		default:
+			st, ok := isPkgStackTracer(err)
+			if ok {
+				return st
+			}
 		}
 		c, ok := err.(causer)
 		if ok && c.Cause() != nil {
@@ -311,7 +335,17 @@ type E interface {
 
 // New returns an error with the supplied message.
 // New also records the stack trace at the point it was called.
-func New(message string) E {
+func New(message string) error {
+	return &fundamentalError{
+		msg:       message,
+		stack:     callers(0),
+		details:   nil,
+		detailsMu: new(sync.Mutex),
+		frame:     frames(0),
+	}
+}
+
+func NewE(message string) E {
 	return &fundamentalError{
 		msg:       message,
 		stack:     callers(0),
@@ -327,7 +361,17 @@ func New(message string) E {
 // Errorf also records the stack trace at the point it was called,
 // unless wrapped error already have a stack trace.
 // If %w is provided multiple times, then a stack trace is always recorded.
-func Errorf(format string, args ...interface{}) E {
+func Errorf(format string, args ...interface{}) error {
+	return ErrorfOffset(1, format, args...) // one for this func
+}
+
+// Errorf return an error with the supplied message
+// formatted according to a format specifier.
+// It supports %w format verb to wrap an existing error.
+// Errorf also records the stack trace at the point it was called,
+// unless wrapped error already have a stack trace.
+// If %w is provided multiple times, then a stack trace is always recorded.
+func ErrorfOffset(offset int, format string, args ...interface{}) E {
 	err := fmt.Errorf(format, args...) //nolint:err113
 	var errs []error
 	// Errorf itself maybe wrapped an error or errors so we can use a type switch here
@@ -342,16 +386,16 @@ func Errorf(format string, args ...interface{}) E {
 		return &msgJoinedError{
 			errs:      errs,
 			msg:       err.Error(),
-			stack:     callers(0),
+			stack:     callers(offset),
 			details:   nil,
 			detailsMu: new(sync.Mutex),
-			frame:     frames(0),
+			frame:     frames(offset),
 		}
 	} else if len(errs) == 1 {
 		unwrap := errs[0]
 		st := getExistingStackTrace(unwrap)
 		if len(st) == 0 {
-			st = callers(0)
+			st = callers(offset)
 		}
 
 		return &msgError{
@@ -360,16 +404,16 @@ func Errorf(format string, args ...interface{}) E {
 			stack:     st,
 			details:   nil,
 			detailsMu: new(sync.Mutex),
-			frame:     frames(0),
+			frame:     frames(offset),
 		}
 	}
 
 	return &fundamentalError{
 		msg:       err.Error(),
-		stack:     callers(0),
+		stack:     callers(offset),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
-		frame:     frames(0),
+		frame:     frames(offset),
 	}
 }
 

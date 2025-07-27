@@ -69,9 +69,12 @@ func writeLinesPrefixed(w io.Writer, linePrefix, s string) {
 func useKnownInterface(err error) bool {
 	for err != nil {
 		switch err.(type) { //nolint:errorlint
-		case stackTracer, pkgStackTracer, goErrorsStackTracer, erisStackTracer, detailer, placeholderStackTracer:
+		case stackTracer, goErrorsStackTracer, erisStackTracer, detailer, placeholderStackTracer:
 			// We return true only on interfaces with data. Not on causer.
 			// We do not care if they really do have data at this point though.
+			return true
+		}
+		if _, ok := isPkgStackTracer(err); ok {
 			return true
 		}
 		// We stop unwrapping if we hit cause or join.
