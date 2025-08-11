@@ -355,6 +355,16 @@ func NewE(message string) E {
 	}
 }
 
+func NewEOffset(offset int, message string) E {
+	return &fundamentalError{
+		msg:       message,
+		stack:     callers(offset),
+		details:   nil,
+		detailsMu: new(sync.Mutex),
+		frame:     frames(offset),
+	}
+}
+
 // Errorf return an error with the supplied message
 // formatted according to a format specifier.
 // It supports %w format verb to wrap an existing error.
@@ -543,16 +553,17 @@ func (e *msgJoinedError) Details() map[string]interface{} {
 	return e.details
 }
 
-func withStack(err error) E {
+func withStackOffset(extraSkip int, err error) E {
+	skip := 1 + extraSkip
 	e, ok := err.(E) //nolint:errorlint
 	if ok {
 		if len(e.StackTrace()) == 0 {
 			return &noMsgError{
 				err:       err,
-				stack:     callers(1),
+				stack:     callers(skip),
 				details:   nil,
 				detailsMu: new(sync.Mutex),
-				frame:     frames(1),
+				frame:     frames(skip),
 			}
 		}
 		return e
@@ -560,7 +571,7 @@ func withStack(err error) E {
 
 	st := getExistingStackTrace(err)
 	if len(st) == 0 {
-		st = callers(1)
+		st = callers(skip)
 	}
 
 	return &noMsgError{
@@ -568,7 +579,7 @@ func withStack(err error) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
-		frame:     frames(1),
+		frame:     frames(skip),
 	}
 }
 
@@ -592,7 +603,15 @@ func WithStack(err error) E {
 		return nil
 	}
 
-	return withStack(err)
+	return withStackOffset(0, err)
+}
+
+func WithStackOffset(offset int, err error) E {
+	if err == nil {
+		return nil
+	}
+
+	return withStackOffset(offset, err)
 }
 
 // noMsgError wraps another error and has its
@@ -649,6 +668,10 @@ func (e *noMsgError) Details() map[string]interface{} {
 // If you want to reuse the err error message use WithMessage
 // or Errorf instead.
 func Wrap(err error, message string) E {
+	return WrapOffset(1, err, message)
+}
+
+func WrapOffset(offset int, err error, message string) E {
 	if err == nil {
 		return nil
 	}
@@ -656,10 +679,10 @@ func Wrap(err error, message string) E {
 	return &causeError{
 		err:       err,
 		msg:       message,
-		stack:     callers(0),
+		stack:     callers(offset),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
-		frame:     frames(0),
+		frame:     frames(offset),
 	}
 }
 
@@ -677,6 +700,10 @@ func Wrap(err error, message string) E {
 // If you want to reuse the err error message use WithMessage
 // or Errorf instead.
 func Wrapf(err error, format string, args ...interface{}) E {
+	return WrapfOffset(1, err, format, args...)
+}
+
+func WrapfOffset(offset int, err error, format string, args ...interface{}) E {
 	if err == nil {
 		return nil
 	}
@@ -684,10 +711,10 @@ func Wrapf(err error, format string, args ...interface{}) E {
 	return &causeError{
 		err:       err,
 		msg:       fmt.Sprintf(format, args...),
-		stack:     callers(0),
+		stack:     callers(offset),
 		details:   nil,
 		detailsMu: new(sync.Mutex),
-		frame:     frames(0),
+		frame:     frames(offset),
 	}
 }
 
@@ -739,10 +766,11 @@ func (e *causeError) Details() map[string]interface{} {
 	return e.details
 }
 
-func withMessage(err error, prefix ...string) E {
+func withMessageOffset(extraSkip int, err error, prefix ...string) E {
+	skip := 1 + extraSkip
 	st := getExistingStackTrace(err)
 	if len(st) == 0 {
-		st = callers(1)
+		st = callers(skip)
 	}
 
 	return &msgError{
@@ -751,7 +779,7 @@ func withMessage(err error, prefix ...string) E {
 		stack:     st,
 		details:   nil,
 		detailsMu: new(sync.Mutex),
-		frame:     frames(1),
+		frame:     frames(skip),
 	}
 }
 
@@ -765,11 +793,15 @@ func withMessage(err error, prefix ...string) E {
 // WithMessage is similar to Errorf("%s: %w", prefix, err), but supports
 // dynamic number of prefixes, and it returns nil if err is nil.
 func WithMessage(err error, prefix ...string) E {
+	return WithMessageOffset(1, err, prefix...)
+}
+
+func WithMessageOffset(offset int, err error, prefix ...string) E {
 	if err == nil {
 		return nil
 	}
 
-	return withMessage(err, prefix...)
+	return withMessageOffset(offset, err, prefix...)
 }
 
 // WithMessagef annotates err with a prefix message
@@ -784,11 +816,15 @@ func WithMessage(err error, prefix ...string) E {
 // WithMessagef is similar to Errorf(format + ": %w", args..., err), but
 // it returns nil if err is nil.
 func WithMessagef(err error, format string, args ...interface{}) E {
+	return WithMessagefOffset(1, err, format, args...)
+}
+
+func WithMessagefOffset(offset int, err error, format string, args ...interface{}) E {
 	if err == nil {
 		return nil
 	}
 
-	return withMessage(err, fmt.Sprintf(format, args...))
+	return withMessageOffset(offset, err, fmt.Sprintf(format, args...))
 }
 
 // Cause returns the result of calling the Cause method on err, if err's
@@ -1046,7 +1082,7 @@ func Join(errs ...error) E {
 	if len(nonNilErrs) == 0 {
 		return nil
 	} else if len(nonNilErrs) == 1 {
-		return withStack(nonNilErrs[0])
+		return withStackOffset(0, nonNilErrs[0])
 	}
 
 	return &msgJoinedError{
@@ -1185,7 +1221,7 @@ func Prefix(err error, prefix ...error) E {
 	}
 
 	if len(nonNilErrs) == 0 {
-		return withStack(err)
+		return withStackOffset(0, err)
 	}
 
 	st := getExistingStackTrace(err)

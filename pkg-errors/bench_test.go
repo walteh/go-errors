@@ -1,3 +1,4 @@
+//go:build go1.7
 // +build go1.7
 
 package errors
@@ -7,6 +8,8 @@ import (
 	"testing"
 
 	stderrors "errors"
+
+	"github.com/walteh/go-errors"
 )
 
 func noErrors(at, depth int) error {
@@ -97,7 +100,7 @@ func BenchmarkStackFormatting(b *testing.B) {
 		name := fmt.Sprintf("%s-stacktrace-%d", r.format, r.stack)
 		b.Run(name, func(b *testing.B) {
 			err := yesErrors(0, r.stack)
-			st := err.(*fundamental).stack.StackTrace()
+			st := err.(errors.E).StackTrace()
 			b.ReportAllocs()
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {

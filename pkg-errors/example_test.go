@@ -3,7 +3,7 @@ package errors_test
 import (
 	"fmt"
 
-	"github.com/pkg/errors"
+	errors "github.com/walteh/go-errors/pkg-errors"
 )
 
 func ExampleNew() {
