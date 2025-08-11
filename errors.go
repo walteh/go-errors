@@ -241,13 +241,33 @@ func isPkgStackTracer(err error) ([]uintptr, bool) {
 	if len(result) == 0 {
 		return nil, false
 	}
-	if result[0].Kind() != reflect.Array {
+	if len(result) != 1 {
 		return nil, false
 	}
-	if result[0].Type().Elem() != reflect.TypeOf(uintptr(0)) {
+
+	res := result[0]
+
+	kind := res.Kind()
+	if kind != reflect.Slice {
 		return nil, false
 	}
-	return result[0].Interface().([]uintptr), true
+
+	elem := res.Type().Elem()
+	convertableToUintptr := elem.ConvertibleTo(reflect.TypeOf(uintptr(0)))
+	if !convertableToUintptr {
+		// isPlaceHoldlderFrame := elem.AssignableTo(reflect.TypeOf(placeholderFrame{}))
+		// if isPlaceHoldlderFrame {
+		// 	return nil, true
+		// }
+		return nil, false
+	}
+
+	ptrs := make([]uintptr, res.Len())
+	for i := 0; i < res.Len(); i++ {
+		ptrs[i] = uintptr(res.Index(i).Uint())
+	}
+
+	return ptrs, true
 }
 
 func getExistingStackTrace(err error) []uintptr {

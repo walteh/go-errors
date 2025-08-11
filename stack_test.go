@@ -50,7 +50,7 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+s",
-		"^gitlab.com/tozd/go/errors.init\n" +
+		"^github.com/walteh/go-errors.init\n" +
 			"\t.+/stack_test.go$",
 	}, {
 		zeropc,
@@ -97,7 +97,7 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+v",
-		"^gitlab.com/tozd/go/errors.init\n" +
+		"^github.com/walteh/go-errors.init\n" +
 			"\t.+/stack_test.go:15$",
 	}, {
 		zeropc,
@@ -124,7 +124,7 @@ func TestFuncname(t *testing.T) {
 	}{
 		{"", ""},
 		{"runtime.main", "main"},
-		{"gitlab.com/tozd/go/errors.funcname", "funcname"},
+		{"github.com/walteh/go-errors.funcname", "funcname"},
 		{"funcname", "funcname"},
 		{"io.copyBuffer", "copyBuffer"},
 		{"main.(*R).Write", "(*R).Write"},
@@ -150,7 +150,7 @@ func TestStackFormatter(t *testing.T) {
 	}{{
 		New("ooh"),
 		"%+v",
-		"^gitlab.com/tozd/go/errors.TestStackFormatter\n" +
+		"^github.com/walteh/go-errors.TestStackFormatter\n" +
 			"\t.+/stack_test.go:151\n",
 	}, {
 		Wrap(
@@ -158,7 +158,7 @@ func TestStackFormatter(t *testing.T) {
 			"ahh",
 		),
 		"%+v",
-		"^gitlab.com/tozd/go/errors.TestStackFormatter\n" +
+		"^github.com/walteh/go-errors.TestStackFormatter\n" +
 			"\t.+/stack_test.go:156\n",
 	}, {
 		func() error {
@@ -166,9 +166,9 @@ func TestStackFormatter(t *testing.T) {
 			return New("ooh")
 		}(),
 		"%+v",
-		"^gitlab.com/tozd/go/errors.TestStackFormatter.func1\n" +
+		"^github.com/walteh/go-errors.TestStackFormatter.func1\n" +
 			"\t.+/stack_test.go:166\n" +
-			"gitlab.com/tozd/go/errors.TestStackFormatter\n" +
+			"github.com/walteh/go-errors.TestStackFormatter\n" +
 			"\t.+/stack_test.go:167\n",
 	}, {
 		func() error {
@@ -179,11 +179,11 @@ func TestStackFormatter(t *testing.T) {
 		}(),
 		"%+v",
 		// Nested function names changed in Go 1.21: https://github.com/golang/go/issues/62132
-		"^gitlab.com/tozd/go/errors.(TestStackFormatter.){1,2}func2.(1|func5)\n" +
+		"^github.com/walteh/go-errors.(TestStackFormatter.){1,2}func2.(1|func5)\n" +
 			"\t.+/stack_test.go:177\n" +
-			"gitlab.com/tozd/go/errors.TestStackFormatter.func2\n" +
+			"github.com/walteh/go-errors.TestStackFormatter.func2\n" +
 			"\t.+/stack_test.go:178\n" +
-			"gitlab.com/tozd/go/errors.TestStackFormatter\n" +
+			"github.com/walteh/go-errors.TestStackFormatter\n" +
 			"\t.+/stack_test.go:179\n",
 	}}
 
@@ -204,24 +204,24 @@ func TestStackFormatter(t *testing.T) {
 		}()
 	}()
 
-	assert.Regexp(t, "^gitlab.com/tozd/go/errors.TestStackFormatter.func4\n"+
+	assert.Regexp(t, "^github.com/walteh/go-errors.TestStackFormatter.func4\n"+
 		"\t.+/stack_test.go:204\n"+
-		"gitlab.com/tozd/go/errors.TestStackFormatter\n"+
+		"github.com/walteh/go-errors.TestStackFormatter\n"+
 		"\t.+/stack_test.go:205\n", fmt.Sprintf("%+v", StackFormatter{stack}))
 
-	assert.Regexp(t, "^gitlab.com/tozd/go/errors.TestStackFormatter.func4\n"+
+	assert.Regexp(t, "^github.com/walteh/go-errors.TestStackFormatter.func4\n"+
 		"\t.+/stack_test.go\n"+
-		"gitlab.com/tozd/go/errors.TestStackFormatter\n"+
+		"github.com/walteh/go-errors.TestStackFormatter\n"+
 		"\t.+/stack_test.go\n", fmt.Sprintf("%+s", StackFormatter{stack}))
 
-	assert.Regexp(t, "^gitlab.com/tozd/go/errors.TestStackFormatter.func4\n"+
+	assert.Regexp(t, "^github.com/walteh/go-errors.TestStackFormatter.func4\n"+
 		"  .+/stack_test.go:204\n"+
-		"gitlab.com/tozd/go/errors.TestStackFormatter\n"+
+		"github.com/walteh/go-errors.TestStackFormatter\n"+
 		"  .+/stack_test.go:205\n", fmt.Sprintf("%+2v", StackFormatter{stack}))
 
-	assert.Regexp(t, "^gitlab.com/tozd/go/errors.TestStackFormatter.func4\n"+
+	assert.Regexp(t, "^github.com/walteh/go-errors.TestStackFormatter.func4\n"+
 		"  .+/stack_test.go\n"+
-		"gitlab.com/tozd/go/errors.TestStackFormatter\n"+
+		"github.com/walteh/go-errors.TestStackFormatter\n"+
 		"  .+/stack_test.go\n", fmt.Sprintf("%+2s", StackFormatter{stack}))
 
 	assert.Equal(t, "", fmt.Sprintf("%+v", StackFormatter{nil}))

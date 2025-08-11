@@ -35,7 +35,7 @@ func TestFormatNew(t *testing.T) {
 		errors.New("error"),
 		"%+v",
 		"^error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatNew\n" +
+			"github.com/walteh/go-errors_test.TestFormatNew\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+15) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -43,7 +43,7 @@ func TestFormatNew(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatNew\n" +
+			"github.com/walteh/go-errors_test.TestFormatNew\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+22) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -51,7 +51,7 @@ func TestFormatNew(t *testing.T) {
 		"%+-2v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatNew\n" +
+			"github.com/walteh/go-errors_test.TestFormatNew\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+30) + "\n" +
 			"(.+\n  .+:\\d+\n)+$",
 	}, {
@@ -59,7 +59,7 @@ func TestFormatNew(t *testing.T) {
 		"% +-#v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatNew\n" +
+			"github.com/walteh/go-errors_test.TestFormatNew\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+38) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -117,14 +117,14 @@ func TestFormatErrorf(t *testing.T) {
 		errors.Errorf("%s", "error"),
 		"%+v",
 		"^error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+19) + "\n",
 	}, {
 		errors.Errorf("%s", "error"),
 		"%-+v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+25) + "\n",
 	}, {
 		errors.Errorf("%w", parentErr),
@@ -139,7 +139,7 @@ func TestFormatErrorf(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+2) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -155,7 +155,7 @@ func TestFormatErrorf(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+56) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -171,7 +171,7 @@ func TestFormatErrorf(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+4) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -179,7 +179,7 @@ func TestFormatErrorf(t *testing.T) {
 		"% +-#v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+4) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -187,15 +187,52 @@ func TestFormatErrorf(t *testing.T) {
 		"%+-2v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+4) + "\n" +
 			"(.+\n  .+:\\d+\n)+$",
 	}, {
 		errors.Errorf("%w", parentPkgErr),
 		"%+v",
 		"^error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatErrorf\n" +
+			"github.com/walteh/go-errors_test.TestFormatErrorf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+4) + "\n" +
+			"(.+\n\t.+:\\d+\n)+$",
+	}}
+
+	for k, tt := range tests {
+		tt := tt
+
+		t.Run(fmt.Sprintf("case=%d", k), func(t *testing.T) {
+			t.Parallel()
+
+			got := fmt.Sprintf(tt.format, tt.error)
+			assert.Regexp(t, tt.want, got)
+
+			err2 := copyThroughJSON(t, tt.error)
+			got2 := fmt.Sprintf(tt.format, err2)
+			assert.Equal(t, got, got2)
+		})
+	}
+}
+
+func TestFormatWithStackIsolated(t *testing.T) {
+	t.Parallel()
+
+	offset := stackOffset(t)
+
+	pkgErr := pkgerrors.New("error")
+
+	tests := []struct {
+		error
+		format string
+		want   string
+	}{{
+		errors.WithStack(pkgErr),
+		"%+-v",
+		"^error\n" +
+			"stack trace \\(most recent call first\\):\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStackIsolated\n" +
+			"\t.+/format_test.go:" + strconv.Itoa(offset+2) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}}
 
@@ -237,7 +274,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+15) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -259,7 +296,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+36) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -281,7 +318,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+57) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -291,7 +328,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+68) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -301,7 +338,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^error1\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+78) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -323,7 +360,7 @@ func TestFormatWithStack(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+100) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -333,7 +370,7 @@ func TestFormatWithStack(t *testing.T) {
 		"% +-#2v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithStack\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithStack\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+110) + "\n" +
 			"(.+\n  .+:\\d+\n)+$",
 	}}
@@ -385,13 +422,13 @@ func TestFormatWrap(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+21) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+22) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -407,7 +444,7 @@ func TestFormatWrap(t *testing.T) {
 		"% +-.1v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+46) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -420,13 +457,13 @@ func TestFormatWrap(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+56) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error1\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+57) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -460,13 +497,13 @@ func TestFormatWrap(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+96) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+97) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -477,12 +514,12 @@ func TestFormatWrap(t *testing.T) {
 		"% +-.3v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+113) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+114) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -493,12 +530,12 @@ func TestFormatWrap(t *testing.T) {
 		"% +-2.3v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+129) + "\n" +
 			"(.+\n  .+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+130) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -509,13 +546,13 @@ func TestFormatWrap(t *testing.T) {
 		"%+-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+145) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"the above error was caused by the following error:\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+146) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -525,11 +562,11 @@ func TestFormatWrap(t *testing.T) {
 		),
 		"%+.1v",
 		"^error2\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+162) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+163) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -539,12 +576,12 @@ func TestFormatWrap(t *testing.T) {
 		),
 		"% +.1v",
 		"^error2\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+176) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+177) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -555,7 +592,7 @@ func TestFormatWrap(t *testing.T) {
 		"% +-#v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrap\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrap\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+191) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -626,7 +663,7 @@ func TestFormatWrapf(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapf\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+15) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -653,13 +690,13 @@ func TestFormatWrapf(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapf\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+39) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapf\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapf\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+40) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}}
@@ -708,7 +745,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^error2: error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+20) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -724,7 +761,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^addition1: EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+37) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -742,7 +779,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^addition2: addition1: EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+53) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -753,13 +790,13 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+63) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error1: EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+64) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -770,7 +807,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^error2: error1\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+81) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -781,7 +818,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^error: EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+92) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -795,13 +832,13 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^outside-error: inside-error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+103) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+104) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -823,7 +860,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.1v",
 		"^error2: error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+135) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -837,7 +874,7 @@ func TestFormatWithMessage(t *testing.T) {
 		"% +-.v",
 		"^outside-error: inside-error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+145) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -850,11 +887,11 @@ func TestFormatWithMessage(t *testing.T) {
 		),
 		"%+.1v",
 		"^outside-error: inside-error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+159) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"EOF\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithMessage\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithMessage\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+160) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -917,9 +954,9 @@ func TestFormatWrappedNew(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.wrappedNew\n" +
+			"github.com/walteh/go-errors_test.wrappedNew\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset-6) + "\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrappedNew\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrappedNew\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+7) + "\n",
 	}}
 
@@ -961,7 +998,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+15) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -983,7 +1020,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+36) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1005,7 +1042,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+57) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1015,7 +1052,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+68) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1025,7 +1062,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^error1\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+78) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1047,7 +1084,7 @@ func TestFormatWithDetails(t *testing.T) {
 		"%+-v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+100) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1056,7 +1093,7 @@ func TestFormatWithDetails(t *testing.T) {
 		),
 		"%+#v",
 		"^error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+110) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1071,7 +1108,7 @@ func TestFormatWithDetails(t *testing.T) {
 			"bar=baz\n" +
 			"foo=1\n" +
 			"quote=\"one\\\\ntwo\"\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+119) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1111,7 +1148,7 @@ func TestFormatWithDetails(t *testing.T) {
 			"foo=1\n" +
 			"quote=\"one\\\\ntwo\"\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+158) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1127,7 +1164,7 @@ func TestFormatWithDetails(t *testing.T) {
 			"foo=1\n" +
 			"quote=\"one\\\\ntwo\"\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWithDetails\n" +
+			"github.com/walteh/go-errors_test.TestFormatWithDetails\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+174) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}}
@@ -1178,7 +1215,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.3v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+23) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1188,7 +1225,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.1v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+33) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1198,7 +1235,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.3v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+43) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1208,7 +1245,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.1v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+53) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1290,7 +1327,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.3v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+135) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1300,7 +1337,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.1v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+145) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1310,7 +1347,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.3v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+155) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1320,7 +1357,7 @@ func TestFormatter(t *testing.T) {
 		"% #-+.1v",
 		"^read error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatter\n" +
+			"github.com/walteh/go-errors_test.TestFormatter\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+165) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1427,7 +1464,7 @@ func TestJoin(t *testing.T) {
 		"% #-+.1v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+19) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1435,7 +1472,7 @@ func TestJoin(t *testing.T) {
 		"% #-+.1v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+27) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1443,7 +1480,7 @@ func TestJoin(t *testing.T) {
 		"% #-+v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+35) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1451,19 +1488,19 @@ func TestJoin(t *testing.T) {
 		"% #-+.1v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+43) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror1\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+43) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+43) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -1471,19 +1508,19 @@ func TestJoin(t *testing.T) {
 		"% #-+2.1v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+63) + "\n" +
 			"(.+\n  .+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"  error1\n" +
 			"  stack trace \\(most recent call first\\):\n" +
-			"  gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"  github.com/walteh/go-errors_test.TestJoin\n" +
 			"    .+/format_test.go:" + strconv.Itoa(offset+63) + "\n" +
 			"(.+\n    .+:\\d+\n)+" +
 			"\n" +
 			"  error2\n" +
 			"  stack trace \\(most recent call first\\):\n" +
-			"  gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"  github.com/walteh/go-errors_test.TestJoin\n" +
 			"    .+/format_test.go:" + strconv.Itoa(offset+63) + "\n" +
 			"(.+\n    .+:\\d+\n)+$",
 	}, {
@@ -1491,50 +1528,50 @@ func TestJoin(t *testing.T) {
 		"%#-+.1v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+83) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"the above error joins errors:\n" +
 			"\terror1\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+83) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\terror2\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+83) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
 		errors.Join(errors.New("error1"), errors.New("error2")),
 		"% #+.1v",
 		"^error1\nerror2\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+102) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror1\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+102) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+102) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
 		errors.Join(errors.New("error1"), errors.New("error2")),
 		"%#+.1v",
 		"^error1\nerror2\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+119) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\terror1\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+119) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\terror2\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+119) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -1571,19 +1608,19 @@ func TestJoin(t *testing.T) {
 		"% #-+.1v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+163) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror1\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+163) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+163) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -1591,17 +1628,17 @@ func TestJoin(t *testing.T) {
 		"% #-+.3v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+183) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror1\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+183) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+183) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -1609,17 +1646,17 @@ func TestJoin(t *testing.T) {
 		"% #-+2.3v",
 		"^error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+201) + "\n" +
 			"(.+\n  .+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"  error1\n" +
-			"  gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"  github.com/walteh/go-errors_test.TestJoin\n" +
 			"  \t.+/format_test.go:" + strconv.Itoa(offset+201) + "\n" +
 			"(.+\n  \t.+:\\d+\n)+" +
 			"\n" +
 			"  error2\n" +
-			"  gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"  github.com/walteh/go-errors_test.TestJoin\n" +
 			"  \t.+/format_test.go:" + strconv.Itoa(offset+201) + "\n" +
 			"(.+\n  \t.+:\\d+\n)+$",
 	}, {
@@ -1627,19 +1664,19 @@ func TestJoin(t *testing.T) {
 		"% #-+.1v",
 		"^message: error1\nerror2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+219) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror1\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+219) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+219) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -1648,19 +1685,19 @@ func TestJoin(t *testing.T) {
 		"^error1\nerror2\n" +
 			"foo=bar\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"github.com/walteh/go-errors_test.TestJoin\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+239) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror1\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+239) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+" +
 			"\n" +
 			"\terror2\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestJoin\n" +
+			"\tgithub.com/walteh/go-errors_test.TestJoin\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+239) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}}
@@ -1714,13 +1751,13 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+21) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+22) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1736,7 +1773,7 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-.1v",
 		"^error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+46) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1749,13 +1786,13 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+56) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error1\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+57) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
@@ -1789,13 +1826,13 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+96) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+97) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1806,12 +1843,12 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-.3v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+113) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+114) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1822,12 +1859,12 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-2.3v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"  .+/format_test.go:" + strconv.Itoa(offset+129) + "\n" +
 			"(.+\n  .+:\\d+\n)+" +
 			"\nthe above error was caused by the following error:\n\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+130) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1838,13 +1875,13 @@ func TestFormatWrapWith(t *testing.T) {
 		"%+-.1v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+145) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"the above error was caused by the following error:\n" +
 			"error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+146) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1854,11 +1891,11 @@ func TestFormatWrapWith(t *testing.T) {
 		),
 		"%+.1v",
 		"^error2\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+162) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+163) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1868,12 +1905,12 @@ func TestFormatWrapWith(t *testing.T) {
 		),
 		"% +.1v",
 		"^error2\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+176) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\n" +
 			"error\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+177) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -1884,7 +1921,7 @@ func TestFormatWrapWith(t *testing.T) {
 		"% +-#v",
 		"^error2\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatWrapWith\n" +
+			"github.com/walteh/go-errors_test.TestFormatWrapWith\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+191) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -2041,14 +2078,14 @@ func TestFormatPrefix(t *testing.T) {
 		"% +-.1v",
 		"^error2: error\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatPrefix\n" +
+			"github.com/walteh/go-errors_test.TestFormatPrefix\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+22) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +
 			"\terror2\n\n" +
 			"\terror\n" +
 			"\tstack trace \\(most recent call first\\):\n" +
-			"\tgitlab.com/tozd/go/errors_test.TestFormatPrefix\n" +
+			"\tgithub.com/walteh/go-errors_test.TestFormatPrefix\n" +
 			"\t\t.+/format_test.go:" + strconv.Itoa(offset+22) + "\n" +
 			"(.+\n\t\t.+:\\d+\n)+$",
 	}, {
@@ -2059,7 +2096,7 @@ func TestFormatPrefix(t *testing.T) {
 		"% +-.1v",
 		"^parent\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatPrefix\n" +
+			"github.com/walteh/go-errors_test.TestFormatPrefix\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+39) + "\n" +
 			"(.+\n\t.+:\\d+\n)+$",
 	}, {
@@ -2075,7 +2112,7 @@ func TestFormatPrefix(t *testing.T) {
 		"% +-.1v",
 		"^error: EOF\n" +
 			"stack trace \\(most recent call first\\):\n" +
-			"gitlab.com/tozd/go/errors_test.TestFormatPrefix\n" +
+			"github.com/walteh/go-errors_test.TestFormatPrefix\n" +
 			"\t.+/format_test.go:" + strconv.Itoa(offset+58) + "\n" +
 			"(.+\n\t.+:\\d+\n)+" +
 			"\nthe above error joins errors:\n\n" +

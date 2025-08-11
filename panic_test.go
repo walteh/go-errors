@@ -33,7 +33,7 @@ func TestPanic(t *testing.T) {
 	time.Sleep(10 * time.Second)
 
 	// We kill whole process group.
-	err = syscall.Kill(-cmd.Process.Pid, syscall.SIGINT)
+	err = cmd.Process.Signal(syscall.SIGINT)
 	assert.NoError(t, err) //nolint:testifylint
 
 	err = cmd.Wait()

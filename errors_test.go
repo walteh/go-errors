@@ -682,7 +682,7 @@ func TestMarshalerError(t *testing.T) {
 	assert.Equal(t, "testStructJSON.MarshalJSON\n", fmt.Sprintf("%n", errors.StackFormatter{stackTrace.StackTrace()[0:1]}))
 	assert.Regexp(t, "^json: error calling MarshalJSON for type errors_test.testStructJSON: error\n"+
 		"foo=bar\n"+
-		"gitlab.com/tozd/go/errors_test.testStructJSON.MarshalJSON\n"+
+		"github.com/walteh/go-errors_test.testStructJSON.MarshalJSON\n"+
 		"\t.+/errors_test.go:\\d+\n"+
 		"(.+\n\t.+:\\d+\n)+$", fmt.Sprintf("%#+v", errors.Formatter{Error: err}))
 
@@ -694,7 +694,7 @@ func TestMarshalerError(t *testing.T) {
 	assert.Equal(t, "testStructJSON.MarshalJSON\n", fmt.Sprintf("%n", errors.StackFormatter{errWithStack.StackTrace()[0:1]}))
 	assert.Regexp(t, "^json: error calling MarshalJSON for type errors_test.testStructJSON: error\n"+
 		"foo=bar\n"+
-		"gitlab.com/tozd/go/errors_test.testStructJSON.MarshalJSON\n"+
+		"github.com/walteh/go-errors_test.testStructJSON.MarshalJSON\n"+
 		"\t.+/errors_test.go:\\d+\n"+
 		"(.+\n\t.+:\\d+\n)+$", fmt.Sprintf("%#+v", errWithStack))
 
@@ -721,7 +721,7 @@ func TestFmtErrorf(t *testing.T) {
 	assert.Equal(t, "getTestNewError\n", fmt.Sprintf("%n", errors.StackFormatter{stackTrace.StackTrace()[0:1]}))
 	assert.Regexp(t, "^test: error\n"+
 		"foo=bar\n"+
-		"gitlab.com/tozd/go/errors_test.getTestNewError\n"+
+		"github.com/walteh/go-errors_test.getTestNewError\n"+
 		"\t.+/errors_test.go:\\d+\n"+
 		"(.+\n\t.+:\\d+\n)+$", fmt.Sprintf("%#+v", errors.Formatter{Error: err}))
 
@@ -733,7 +733,7 @@ func TestFmtErrorf(t *testing.T) {
 	assert.Equal(t, "getTestNewError\n", fmt.Sprintf("%n", errors.StackFormatter{errWithStack.StackTrace()[0:1]}))
 	assert.Regexp(t, "^test: error\n"+
 		"foo=bar\n"+
-		"gitlab.com/tozd/go/errors_test.getTestNewError\n"+
+		"github.com/walteh/go-errors_test.getTestNewError\n"+
 		"\t.+/errors_test.go:\\d+\n"+
 		"(.+\n\t.+:\\d+\n)+$", fmt.Sprintf("%#+v", errWithStack))
 

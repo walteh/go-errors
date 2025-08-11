@@ -26,6 +26,6 @@ func Example_stackTrace() {
 	fmt.Printf("%s\n\t%s:%d", frame.Function, frame.File, frame.Line)
 
 	// Example output:
-	// gitlab.com/tozd/go/errors_test.getErr
+	// github.com/walteh/go-errors_test.getErr
 	//	/home/user/errors/example_test.go:11
 }

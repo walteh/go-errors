@@ -24,7 +24,7 @@ func ExampleNew_printf() {
 	// Example output:
 	// whoops
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleNew_printf
+	// github.com/walteh/go-errors_test.ExampleNew_printf
 	// 	/home/user/errors/example_test.go:16
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -55,7 +55,7 @@ func ExampleWithMessage_printf() {
 	// Example Output:
 	// oh noes: whoops
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleWithMessage_printf
+	// github.com/walteh/go-errors_test.ExampleWithMessage_printf
 	// 	/home/user/errors/example_test.go:46
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -93,7 +93,7 @@ func ExampleWithStack_printf() {
 	// Example output:
 	// whoops
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleWithStack_printf
+	// github.com/walteh/go-errors_test.ExampleWithStack_printf
 	// 	/home/user/errors/example_test.go:85
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -124,7 +124,7 @@ func ExampleWrap_printf() {
 	// Example output:
 	// oh noes
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleWrap_printf
+	// github.com/walteh/go-errors_test.ExampleWrap_printf
 	// 	/home/user/errors/example_test.go:116
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -143,7 +143,7 @@ func ExampleWrap_printf() {
 	//
 	// whoops
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleWrap_printf
+	// github.com/walteh/go-errors_test.ExampleWrap_printf
 	// 	/home/user/errors/example_test.go:115
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -173,7 +173,7 @@ func ExampleErrorf() {
 	// Example output:
 	// whoops: foo
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleErrorf
+	// github.com/walteh/go-errors_test.ExampleErrorf
 	// 	/home/user/errors/example_test.go:165
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -197,7 +197,7 @@ func ExampleErrorf_wrap() {
 	// Example output:
 	// oh noes (whoops)
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleErrorf_wrap
+	// github.com/walteh/go-errors_test.ExampleErrorf_wrap
 	// 	/home/user/errors/example_test.go:189
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -273,7 +273,7 @@ func ExampleJoin() {
 	// error1
 	// error2
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleJoin
+	// github.com/walteh/go-errors_test.ExampleJoin
 	// 	/home/user/errors/example_test.go:265
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -292,7 +292,7 @@ func ExampleJoin() {
 	//
 	// 	error1
 	// 	stack trace (most recent call first):
-	// 	gitlab.com/tozd/go/errors_test.ExampleJoin
+	// 	github.com/walteh/go-errors_test.ExampleJoin
 	// 		/home/user/errors/example_test.go:263
 	// 	testing.runExample
 	// 		/usr/local/go/src/testing/run_example.go:63
@@ -309,7 +309,7 @@ func ExampleJoin() {
 	//
 	// 	error2
 	// 	stack trace (most recent call first):
-	// 	gitlab.com/tozd/go/errors_test.ExampleJoin
+	// 	github.com/walteh/go-errors_test.ExampleJoin
 	// 		/home/user/errors/example_test.go:264
 	// 	testing.runExample
 	// 		/usr/local/go/src/testing/run_example.go:63
@@ -367,7 +367,7 @@ func ExampleStackFormatter_MarshalJSON() {
 	fmt.Println(string(data))
 
 	// Example output:
-	// [{"name":"gitlab.com/tozd/go/errors_test.ExampleStackFormatter_MarshalJSON","file":"/home/user/errors/example_test.go","line":360}]
+	// [{"name":"github.com/walteh/go-errors_test.ExampleStackFormatter_MarshalJSON","file":"/home/user/errors/example_test.go","line":360}]
 }
 
 func ExampleStackFormatter_Format() {
@@ -377,7 +377,7 @@ func ExampleStackFormatter_Format() {
 	fmt.Printf("%+v", errors.StackFormatter{cs[:]})
 
 	// Example output:
-	// gitlab.com/tozd/go/errors_test.ExampleStackFormatter_Format
+	// github.com/walteh/go-errors_test.ExampleStackFormatter_Format
 	// 	/home/user/errors/example_test.go:374
 }
 
@@ -388,7 +388,7 @@ func ExampleStackFormatter_Format_width() {
 	fmt.Printf("%+2v", errors.StackFormatter{cs[:]})
 
 	// Example output:
-	// gitlab.com/tozd/go/errors_test.ExampleStackFormatter_Format
+	// github.com/walteh/go-errors_test.ExampleStackFormatter_Format
 	//   /home/user/errors/example_test.go:385
 }
 
@@ -402,7 +402,7 @@ func ExampleFormatter_Format() {
 	// image not found
 	// filename=star.png
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleFormatter_Format
+	// github.com/walteh/go-errors_test.ExampleFormatter_Format
 	// 	/home/user/errors/example_test.go:395
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -443,7 +443,7 @@ func ExampleFormatter_MarshalJSON() {
 	// 	"filename": "star.png",
 	// 	"stack": [
 	// 		{
-	// 			"name": "gitlab.com/tozd/go/errors_test.ExampleFormatter_MarshalJSON",
+	// 			"name": "github.com/walteh/go-errors_test.ExampleFormatter_MarshalJSON",
 	// 			"file": "/home/user/errors/example_test.go",
 	// 			"line": 427
 	// 		},
@@ -499,7 +499,7 @@ func ExampleUnmarshalJSON() {
 	// image not found
 	// filename=star.png
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleUnmarshalJSON
+	// github.com/walteh/go-errors_test.ExampleUnmarshalJSON
 	// 	/home/user/errors/example_test.go:486
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -538,7 +538,7 @@ func ExampleWrapWith_printf() {
 	// Example output:
 	// an error
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExampleWrapWith_printf
+	// github.com/walteh/go-errors_test.ExampleWrapWith_printf
 	// 	/home/user/errors/example_test.go:536
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
@@ -577,7 +577,7 @@ func ExamplePrefix_printf() {
 	// Example output:
 	// an error: EOF
 	// stack trace (most recent call first):
-	// gitlab.com/tozd/go/errors_test.ExamplePrefix_printf
+	// github.com/walteh/go-errors_test.ExamplePrefix_printf
 	// 	/home/user/errors/example_test.go:575
 	// testing.runExample
 	// 	/usr/local/go/src/testing/run_example.go:63
