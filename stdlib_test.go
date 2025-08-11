@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func TestBase(t *testing.T) {

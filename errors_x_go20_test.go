@@ -4,7 +4,7 @@
 // We want this file to be after errors_test.go so that extra test cases are appended to others.
 package errors_test
 
-import "gitlab.com/tozd/go/errors"
+import "github.com/walteh/go-errors"
 
 func init() {
 	currentStackSize := len(callers()) + 1

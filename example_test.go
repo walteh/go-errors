@@ -8,7 +8,7 @@ import (
 	"os"
 	"runtime"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func ExampleNew() {

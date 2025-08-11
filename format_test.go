@@ -11,7 +11,7 @@ import (
 	pkgerrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func TestFormatNew(t *testing.T) {

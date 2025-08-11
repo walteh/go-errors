@@ -1,4 +1,4 @@
-module gitlab.com/tozd/go/errors
+module github.com/walteh/go-errors
 
 go 1.17
 

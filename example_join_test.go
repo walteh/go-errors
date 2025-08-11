@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func run() (errE errors.E) {

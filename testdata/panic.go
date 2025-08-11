@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func main() {

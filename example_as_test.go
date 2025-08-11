@@ -3,7 +3,7 @@ package errors_test
 import (
 	"fmt"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 type MyError struct {

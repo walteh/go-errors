@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"gitlab.com/tozd/go/errors"
+	"github.com/walteh/go-errors"
 )
 
 func getErr() error {
